@@ -1,12 +1,13 @@
-package com.aetumn.ram.web;
+package com.aetumn.ram.rest;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,18 +21,18 @@ public class QuoteRestController {
 	
 	@Autowired QuoteService quoteService;
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public List<Quote> getQuotes(@RequestParam(value = "author", required = false) String author) {
 		return quoteService.getQuotesByAuthor(author);
 	}
 
-	@RequestMapping(path="/add", method = RequestMethod.POST)
+	@PostMapping("/add")
 	public ResponseEntity<?> add(@RequestBody Quote quote) {
 		quoteService.save(quote);
 		return null;
 	}
 
-	@RequestMapping(path="/addMany", method = RequestMethod.POST)
+	@PostMapping("/addMany")
 	public ResponseEntity<?> add(@RequestBody List<Quote> quotes) {
 		quotes.stream().forEach(quote -> quoteService.save(quote));
 		return null;
